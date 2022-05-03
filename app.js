@@ -14,4 +14,23 @@ app.get('/', (req, res) => {
 
 app.use(bookRoutes);
 
+// Page 404 Error Handler
+app.use((req, res, next) => {
+    const err = new Error('404 Page Not Found.');
+
+    err.status = 404;
+
+    next(err);
+});
+
+// Error's Handler
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+
+    res.send({
+        status: 'fail',
+        message: err.message
+    });
+});
+
 app.listen(3000, () => { console.log('Server started on port 3000'); });
